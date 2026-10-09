@@ -1,0 +1,8 @@
+# Self-signed HTTPS certificate for LAN camera testing. Holds a private key: never commit.
+.cert/
+
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+.claude/settings.local.json

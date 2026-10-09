@@ -1,0 +1,87 @@
+/* Camera checklist, in-test camera signal and proctoring, the integrity report. */
+
+/* ---------- page frame (bare, v4 pages) ---------- */
+.pc-page { min-height: 100vh; display: flex; align-items: center; background: var(--bg); padding: 24px 0; }
+.pc-page .container { width: 100%; }
+.pc { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 32px; align-items: start; }
+.pc-main h1 { font-size: 1.9rem; }
+.pc-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--border-strong); }
+.pc-actions .btn.lg { min-width: 190px; }
+
+/* ---------- checklist ---------- */
+.cc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.cc-list li { display: flex; align-items: center; gap: 12px; padding: 11px 13px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); transition: border-color .15s, background .15s; }
+.cc-list li.ok { border-color: color-mix(in srgb, var(--good) 35%, var(--border)); background: color-mix(in srgb, var(--good-soft) 50%, var(--surface)); }
+.cc-list li.bad { border-color: color-mix(in srgb, var(--bad) 40%, var(--border)); background: color-mix(in srgb, var(--bad-soft) 55%, var(--surface)); }
+.cc-list li.skip, .cc-list li.info { opacity: .78; }
+.cc-ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--surface-3); color: var(--muted); border: 1.5px solid var(--border-strong); }
+.cc-list li.ok .cc-ic { background: var(--good); color: #fff; border-color: transparent; }
+.cc-list li.bad .cc-ic { background: var(--bad); color: #fff; border-color: transparent; }
+.cc-list li.info .cc-ic { background: var(--accent-soft); color: var(--text); }
+.cc-ic .spin { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border-strong); border-top-color: var(--ink); animation: ccspin .8s linear infinite; }
+:root[data-theme="dark"] .cc-ic .spin { border-top-color: var(--saffron); }
+.cc-ic .dash { width: 10px; height: 2px; background: var(--faint); border-radius: 2px; }
+@keyframes ccspin { to { transform: rotate(360deg); } }
+.cc-txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.cc-txt b { font-size: .95rem; }
+.cc-d { font-size: .83rem; color: var(--muted); }
+.cc-act { flex: none; }
+
+/* v4 camera widget (Settings preview) */
+.cc { display: grid; gap: 14px; }
+.cc-cam { position: relative; border-radius: 14px; overflow: hidden; background: #0b0f1a; aspect-ratio: 4 / 3; box-shadow: var(--shadow); }
+.cc-video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); display: block; }
+.cc-oval { position: absolute; inset: 9% 22%; border-radius: 50%; border: 3px dashed rgb(255 255 255 / 70%); box-shadow: 0 0 0 999px rgb(10 14 26 / 30%); transition: border-color .2s; }
+.cc-oval.ok { border-style: solid; border-color: #6fd39c; }
+.cc-oval.bad { border-color: #f2b14a; }
+.cc-guide { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgb(10 14 26 / 66%); color: #fff; font-size: .9rem; font-weight: 600; }
+.cc-guide .dot { background: #f2b14a; }
+.cc-guide.ok .dot { background: #6fd39c; }
+.cc-off { position: absolute; inset: 0; display: grid; place-items: center; background: #121828; color: #d8d2c4; text-align: center; padding: 24px; }
+.cc-ring { display: none; }
+
+/* photos */
+.enrol-result { display: flex; gap: 18px; align-items: flex-start; margin-top: 8px; }
+.enrol-thumb, .face-thumb { width: 112px; height: 112px; border-radius: 12px; object-fit: cover; border: 5px solid var(--surface); background: #000; flex: none; box-shadow: var(--shadow); }
+.face-thumb.sm { width: 44px; height: 44px; border-radius: 10px; border-width: 3px; }
+
+/* ---------- in-test camera signal ---------- */
+.status-pill.sig { cursor: pointer; font: inherit; font-size: .78rem; font-weight: 600; }
+.status-pill.sig .dot { background: var(--faint); }
+.status-pill.sig.ok { color: var(--good); } .status-pill.sig.ok .dot { background: var(--good); box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 22%, transparent); animation: sigBeat 2.4s ease-in-out infinite; }
+.status-pill.sig.ink { color: var(--text); } .status-pill.sig.ink .dot { background: var(--ink); }
+.status-pill.sig.warn { color: var(--warn); border-color: color-mix(in srgb, var(--saffron) 50%, var(--border)); } .status-pill.sig.warn .dot { background: var(--saffron); }
+.status-pill.sig.bad { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 45%, var(--border)); background: var(--bad-soft); } .status-pill.sig.bad .dot { background: var(--bad); }
+@keyframes sigBeat { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--good) 0%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .status-pill.sig.ok .dot { animation: none; } }
+.sig-banner { background: color-mix(in srgb, var(--saffron-soft) 80%, var(--surface)); }
+.sig-banner .ico { color: var(--warn); flex: none; }
+.sig-banner .sig-ban-txt { font-weight: 600; }
+.sig-banner em, .pro-banner em { color: var(--muted); font-style: normal; margin-left: auto; }
+.pro-banner { background: var(--bad-soft); }
+.pro-banner .ico { color: var(--bad); flex: none; }
+.pro-banner .pro-ban-txt { font-weight: 650; }
+
+/* ---------- report ---------- */
+.sum-block.integrity { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); }
+.sum-block.integrity.clean { border-color: color-mix(in srgb, var(--good) 30%, var(--border)); background: color-mix(in srgb, var(--good-soft) 60%, var(--surface)); }
+.sum-block.integrity.review { border-color: color-mix(in srgb, var(--bad) 30%, var(--border)); background: color-mix(in srgb, var(--bad-soft) 55%, var(--surface)); }
+.sum-block.integrity.minor { border-color: color-mix(in srgb, var(--warn) 35%, var(--border)); background: color-mix(in srgb, var(--warn-soft) 55%, var(--surface)); }
+.rp-mk.mk-proctor { top: 0; bottom: 0; width: 3px; height: auto; margin-left: -1px; border-radius: 0; background: var(--bad); }
+.rp-legend .lg.mk-proctor { width: 3px; height: 12px; border-radius: 0; background: var(--bad); border: 0; }
+.snaps { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; }
+.snap { margin: 0; border-radius: 10px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); }
+.snap img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #0b0f1a; }
+.snap figcaption { padding: 6px 9px; font-size: .78rem; display: flex; justify-content: space-between; gap: 6px; }
+.snap figcaption b { color: var(--bad); font-weight: 600; }
+
+@media (max-width: 900px) {
+  .pc { grid-template-columns: 1fr; gap: 20px; }
+  .pc-page { align-items: flex-start; padding: 12px 0; }
+}
+@media (max-width: 640px) {
+  .pc-main h1 { font-size: 1.45rem; }
+  .enrol-result { flex-direction: column; }
+  .pc-actions .btn.lg { width: 100%; }
+  .status-pill.sig .sig-txt { display: none; }
+}
