@@ -4,6 +4,8 @@ A NEET/JEE practice app built around **facial-expression behaviour analysis**. T
 
 No build step, no dependencies. Plain ES modules; installable as a PWA; works offline once the camera models are cached.
 
+**Live:** https://sourcetosh.github.io/exam-insight/ (real HTTPS, so the camera works on phones too, with no certificate warning).
+
 ## Run it
 
 ```bash
